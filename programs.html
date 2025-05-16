@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Программы | Портал по здоровью и фитнесу</title>
+    <style>
+        /* Базовые стили */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --text-color: #333;
+            --light-text: #fff;
+            --border-color: #ddd;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        /* Общий фон */
+        .wrapper-programs {
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),
+                url('https://get.wallhere.com/photo/barbell-powerlifting-1951647.jpg') no-repeat center center fixed;
+            background-size: cover;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Шапка */
+        header {
+            background-color: rgba(44, 62, 80, 0.9);
+            color: var(--light-text);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .container {
+            width: 100%;
+            padding: 0 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin: 0;
+            font-weight: 700;
+            color: var(--light-text);
+            text-decoration: none;
+            padding: 5px 0;
+        }
+        
+        /* Мобильное меню - кнопка теперь видна на мобильных */
+        .menu-toggle {
+            display: none; /* По умолчанию скрыта */
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            order: 2; /* Помещаем кнопку после логотипа */
+        }
+        
+        nav {
+            width: 100%;
+            order: 3;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        nav.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .nav-menu {
+            list-style: none;
+            background-color: rgba(44, 62, 80, 0.95);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li {
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-menu a {
+            color: var(--light-text);
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Основное содержимое */
+        main {
+            flex: 1;
+            padding: 30px 0;
+            width: 100%;
+        }
+        
+        /* Остальные стили остаются без изменений */
+        .programs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .programs-section {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 auto;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: var(--shadow);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+        }
+        
+        /* Стили для программ и планов */
+        .programs-grid, .plans-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .program, .plan {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .program h3, .plan h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .program p, .plan p {
+            margin-bottom: 15px;
+        }
+        
+        .program ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .program li, .plan li {
+            margin-bottom: 8px;
+        }
+        
+        /* Стили для кнопок скачивания */
+        .download-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .download-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Подвал */
+        footer {
+            background-color: rgba(44, 62, 80, 0.9);
+            color: var(--light-text);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        /* Медиазапрос для мобильных устройств */
+        @media (max-width: 767px) {
+            .menu-toggle {
+                display: block; /* Показываем кнопку на мобильных */
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            .header-container {
+                justify-content: space-between;
+            }
+            
+            .programs-section {
+                padding: 15px;
+                width: 95%;
+            }
+            
+            .download-btn {
+                width: 100%;
+                padding: 12px;
+            }
+        }
+        
+        /* Медиазапрос для десктопов */
+        @media (min-width: 768px) {
+            nav {
+                display: block;
+                width: auto;
+                order: 2;
+                margin-top: 0;
+            }
+            
+            .nav-menu {
+                display: flex;
+                background: none;
+            }
+            
+            .nav-menu li {
+                border-top: none;
+                margin-left: 15px;
+            }
+            
+            .programs-grid, .plans-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* Поддержка устройств с notch */
+        @supports(padding: max(0px)) {
+            body, header, footer {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+            }
+            
+            header {
+                padding-top: max(15px, env(safe-area-inset-top));
+            }
+            
+            footer {
+                padding-bottom: max(15px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper-programs">
+        <header>
+            <div class="container header-container">
+                <a href="index.html" class="logo">Здоровый образ жизни с нами!</a>
+                <!-- Кнопка меню теперь будет видна на мобильных -->
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                
+                <nav id="main-nav">
+                    <ul class="nav-menu">
+                        <li><a href="index.html">База знаний</a></li>
+                        <li><a href="programs.html">Программы</a></li>
+                        <li><a href="profile.html">Личный кабинет</a></li>
+                        <li><a href="calculator.html">Калькулятор</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="programs-container">
+                    <section id="training-programs" class="programs-section">
+                        <h2>Программы тренировок</h2>
+                        <div class="programs-grid">
+                            <div class="program">
+                                <h3>Программа для начинающих</h3>
+                                <p>Эта программа предназначена для тех, кто только начинает свой путь в фитнесе. Она включает в себя упражнения для укрепления мышц всего тела.</p>
+                                <ul>
+                                    <li>Разминка: 10 минут</li>
+                                    <li>Приседания: 3 подхода по 10 повторений</li>
+                                    <li>Отжимания: 3 подхода по 10 повторений</li>
+                                    <li>Подтягивания: 3 подхода по максимально возможному количеству повторений</li>
+                                    <li>Заминка: 10 минут</li>
+                                </ul>
+                                <a href="files/program1.txt" class="download-btn" download>Скачать программу</a>
+                            </div>
+
+                            <div class="program">
+                                <h3>Программа для продвинутых</h3>
+                                <p>Эта программа предназначена для тех, кто уже имеет опыт в фитнесе и хочет увеличить свою силу и выносливость.</p>
+                                <ul>
+                                    <li>Разминка: 10 минут</li>
+                                    <li>Жим штанги лежа: 3 подхода по 8 повторений</li>
+                                    <li>Становая тяга: 3 подхода по 5 повторений</li>
+                                    <li>Приседания со штангой: 3 подхода по 8 повторений</li>
+                                    <li>Подтягивания с весом: 3 подхода по 8 повторений</li>
+                                    <li>Заминка: 10 минут</li>
+                                </ul>
+                                <a href="files/program2.txt" class="download-btn" download>Скачать программу</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="nutrition-plans" class="programs-section">
+                        <h2>Планы питания</h2>
+                        <div class="plans-grid">
+                            <div class="plan">
+                                <h3>План питания для похудения</h3>
+                                <p>Этот план питания предназначен для тех, кто хочет сбросить вес и улучшить свое здоровье. Он включает в себя продукты с низким содержанием калорий и высоким содержанием питательных веществ.</p>
+                                <a href="files/poxydenie1.txt" class="download-btn" download>Скачать план</a>
+                            </div>
+
+                            <div class="plan">
+                                <h3>План питания для набора массы</h3>
+                                <p>Этот план питания предназначен для тех, кто хочет набрать мышечную массу и увеличить свою силу. Он включает в себя продукты с высоким содержанием белка и углеводов.</p>
+                                <a href="files/nabor1.txt" class="download-btn" download>Скачать план</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Портал по здоровью и фитнесу</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Функция для переключения мобильного меню
+        function toggleMenu() {
+            const nav = document.getElementById('main-nav');
+            nav.classList.toggle('active');
+        }
+        
+        // Закрытие меню при клике на пункт (для мобильных)
+        document.querySelectorAll('.nav-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    document.getElementById('main-nav').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

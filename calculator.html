@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Калькулятор ИМТ и калорий</title>
+    <style>
+        /* Базовые стили */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --text-color: #333;
+            --light-text: #fff;
+            --border-color: #ddd;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .wrapper-calculator {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+                url('https://avatars.mds.yandex.net/i?id=f84e2b4e5387f17d73f7fe84ccb7b190_l-13059231-images-thumbs&n=13') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Шапка */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin: 0;
+            font-weight: 700;
+            color: var(--light-text);
+            text-decoration: none;
+            padding: 5px 0;
+        }
+
+        /* Навигация для мобильных */
+        nav {
+            width: 100%;
+            order: 3;
+            margin-top: 10px;
+            display: none;
+        }
+
+        nav.active {
+            display: block;
+        }
+
+        nav ul {
+            list-style: none;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        nav li {
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Кнопка меню для мобильных */
+        .menu-toggle {
+            display: block;
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        /* Основное содержимое */
+        main {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .calculator-section {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+        }
+
+        /* Формы */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        /* Стили для select с ограничением ширины на мобильных */
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: white;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+
+        /* Особые стили для select уровня активности на мобильных */
+        @media (max-width: 767px) {
+            #activity-level {
+                max-width: 100%;
+                white-space: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            #activity-level option {
+                white-space: normal;
+                max-width: 100%;
+            }
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Результаты */
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+
+        .result p {
+            margin-bottom: 10px;
+        }
+
+        #bmi-value, #calorie-value {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Цвета для результатов ИМТ */
+        .underweight-severe { background-color: #ffebee; border-left: 4px solid #f44336; }
+        .underweight { background-color: #fff8e1; border-left: 4px solid #ffc107; }
+        .normal { background-color: #e8f5e9; border-left: 4px solid #4caf50; }
+        .overweight { background-color: #fff3e0; border-left: 4px solid #ff9800; }
+        .obese-1 { background-color: #fce4ec; border-left: 4px solid #e91e63; }
+        .obese-2 { background-color: #f3e5f5; border-left: 4px solid #9c27b0; }
+        .obese-3 { background-color: #e8eaf6; border-left: 4px solid #3f51b5; }
+
+        /* Подвал */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        /* Адаптация для планшетов */
+        @media (min-width: 768px) {
+            .menu-toggle {
+                display: none;
+            }
+
+            nav {
+                display: block;
+                width: auto;
+                order: 2;
+                margin-top: 0;
+            }
+
+            nav ul {
+                display: flex;
+                background: none;
+            }
+
+            nav li {
+                border-top: none;
+                margin-left: 10px;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                border-radius: 4px;
+            }
+
+            .form-row {
+                flex-direction: row;
+            }
+
+            .form-row .form-group {
+                flex: 1;
+            }
+
+            button {
+                width: auto;
+                min-width: 200px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* Поддержка устройств с notch */
+        @supports(padding: max(0px)) {
+            body, header, footer {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+            }
+
+            header {
+                padding-top: max(15px, env(safe-area-inset-top));
+            }
+
+            footer {
+                padding-bottom: max(15px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper-calculator">
+        <header>
+            <div class="container header-container">
+                <h1 class="logo">Здоровый образ жизни с нами!</h1>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="index.html">База знаний</a></li>
+                        <li><a href="programs.html">Программы</a></li>
+                        <li><a href="profile.html">Личный кабинет</a></li>
+                        <li><a href="calculator.html">Калькулятор</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <section id="bmi-calculator" class="calculator-section">
+                    <h2>Калькулятор индекса массы тела (ИМТ)</h2>
+                    <form id="bmi-form">
+                        <div class="form-group">
+                            <label for="height">Рост (см):</label>
+                            <input type="number" id="height" name="height" required min="100" max="250" value="170">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weight">Вес (кг):</label>
+                            <input type="number" id="weight" name="weight" required min="30" max="300" value="70">
+                        </div>
+
+                        <button type="button" onclick="calculateBMI()">Рассчитать</button>
+                    </form>
+
+                    <div id="bmi-result" class="result">
+                        <p>Ваш ИМТ: <span id="bmi-value"></span></p>
+                        <p id="bmi-interpretation"></p>
+                    </div>
+                </section>
+
+                <section id="calorie-calculator" class="calculator-section">
+                    <h2>Калькулятор калорий</h2>
+                    <form id="calorie-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender">Пол:</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="male">Мужской</option>
+                                    <option value="female">Женский</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">Возраст (лет):</label>
+                                <input type="number" id="age" name="age" required min="10" max="100" value="30">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="height-cm">Рост (см):</label>
+                                <input type="number" id="height-cm" name="height-cm" required min="100" max="250" value="170">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="weight-kg">Вес (кг):</label>
+                                <input type="number" id="weight-kg" name="weight-kg" required min="30" max="200" value="70">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activity-level">Уровень активности:</label>
+                            <select id="activity-level" name="activity-level" required>
+                                <option value="1.2">Сидячий образ жизни (мало или нет активности)</option>
+                                <option value="1.375">Небольшая активность (1-3 тренировки в неделю)</option>
+                                <option value="1.55" selected>Умеренная активность (3-5 тренировок в неделю)</option>
+                                <option value="1.725">Высокая активность (6-7 тренировок в неделю)</option>
+                                <option value="1.9">Экстремальная активность (тяжелая физическая работа или тренировки 2 раза в день)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goal">Цель:</label>
+                            <select id="goal" name="goal" required>
+                                <option value="lose">Похудение</option>
+                                <option value="maintain" selected>Поддержание веса</option>
+                                <option value="gain">Набор массы</option>
+                            </select>
+                        </div>
+
+                        <button type="button" onclick="calculateCalories()">Рассчитать</button>
+                    </form>
+
+                    <div id="calorie-result" class="result">
+                        <p>Рекомендуемое количество калорий в день: <span id="calorie-value"></span></p>
+                        <p id="calorie-description"></p>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Портал по здоровью и фитнесу</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Функция для переключения меню на мобильных
+        function toggleMenu() {
+            const nav = document.getElementById('main-nav');
+            nav.classList.toggle('active');
+        }
+
+        // Расчет ИМТ
+        function calculateBMI() {
+            const heightInput = document.getElementById('height');
+            const weightInput = document.getElementById('weight');
+            
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+            
+            // Валидация
+            if (isNaN(height) || height <= 0) {
+                alert('Пожалуйста, введите корректное значение роста');
+                heightInput.focus();
+                return;
+            }
+            
+            if (isNaN(weight) || weight <= 0) {
+                alert('Пожалуйста, введите корректное значение веса');
+                weightInput.focus();
+                return;
+            }
+            
+            // Расчет ИМТ: вес (кг) / (рост (м))^2
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+            document.getElementById('bmi-value').textContent = bmi;
+            
+            // Интерпретация результата
+            let interpretation = '';
+            let colorClass = '';
+            
+            if (bmi < 16) {
+                interpretation = 'Выраженный дефицит массы тела';
+                colorClass = 'underweight-severe';
+            } else if (bmi >= 16 && bmi < 18.5) {
+                interpretation = 'Недостаточная масса тела';
+                colorClass = 'underweight';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                interpretation = 'Нормальная масса тела';
+                colorClass = 'normal';
+            } else if (bmi >= 25 && bmi < 30) {
+                interpretation = 'Избыточная масса тела (предожирение)';
+                colorClass = 'overweight';
+            } else if (bmi >= 30 && bmi < 35) {
+                interpretation = 'Ожирение 1 степени';
+                colorClass = 'obese-1';
+            } else if (bmi >= 35 && bmi < 40) {
+                interpretation = 'Ожирение 2 степени';
+                colorClass = 'obese-2';
+            } else {
+                interpretation = 'Ожирение 3 степени';
+                colorClass = 'obese-3';
+            }
+            
+            document.getElementById('bmi-interpretation').textContent = interpretation;
+            
+            // Добавляем класс для стилизации результата
+            const resultElement = document.getElementById('bmi-result');
+            resultElement.className = 'result ' + colorClass;
+            resultElement.style.display = 'block';
+        }
+
+        // Расчет калорий
+        function calculateCalories() {
+            const gender = document.getElementById('gender').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height-cm').value);
+            const weight = parseFloat(document.getElementById('weight-kg').value);
+            const activity = parseFloat(document.getElementById('activity-level').value);
+            const goal = document.getElementById('goal').value;
+            
+            // Валидация
+            if (isNaN(age) || age < 10 || age > 100) {
+                alert('Пожалуйста, введите корректный возраст (от 10 до 100 лет)');
+                document.getElementById('age').focus();
+                return;
+            }
+            
+            if (isNaN(height) || height < 100 || height > 250) {
+                alert('Пожалуйста, введите корректный рост (от 100 до 250 см)');
+                document.getElementById('height-cm').focus();
+                return;
+            }
+            
+            if (isNaN(weight) || weight < 30 || weight > 200) {
+                alert('Пожалуйста, введите корректный вес (от 30 до 200 кг)');
+                document.getElementById('weight-kg').focus();
+                return;
+            }
+            
+            // Формула Миффлина-Сан Жеора
+            let bmr;
+            if (gender === 'male') {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+            
+            // Умножаем на коэффициент активности
+            let calories = Math.round(bmr * activity);
+            
+            // Корректировка по цели
+            let description = '';
+            if (goal === 'lose') {
+                calories -= 500;
+                description = 'Для здорового похудения (0.5 кг в неделю) рекомендуется дефицит ~500 ккал в день.';
+            } else if (goal === 'gain') {
+                calories += 500;
+                description = 'Для набора мышечной массы (0.5 кг в неделю) рекомендуется профицит ~500 ккал в день.';
+            } else {
+                description = 'Для поддержания текущего веса придерживайтесь этого количества калорий.';
+            }
+            
+            // Отображаем результат
+            document.getElementById('calorie-value').textContent = calories;
+            document.getElementById('calorie-description').textContent = description;
+            document.getElementById('calorie-result').style.display = 'block';
+        }
+
+        // Рассчитаем автоматически при загрузке (для демонстрации)
+        window.onload = function() {
+            calculateBMI();
+            calculateCalories();
+        };
+    </script>
+</body>
+</html>

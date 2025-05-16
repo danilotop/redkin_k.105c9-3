@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Портал по здоровью и фитнесу</title>
+    <link rel="stylesheet" href="#">
+    <style>
+        /* Базовые стили для мобильных устройств */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        
+        header {
+            background-color: #2c3e50ee;
+            color: white;
+            padding: 15px 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            margin: 0;
+            text-align: center;
+        }
+        
+        nav ul {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0;
+        }
+        
+        nav li {
+            margin-bottom: 10px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 8px 0;
+            text-align: center;
+        }
+        
+        #hero {
+            background-color: #afc3d18f;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+        
+        #hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url('https://sun9-21.userapi.com/c636519/v636519419/4cb22/bUgXudbxXEg.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .buttons, .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        #knowledge-base {
+            padding: 30px 0;
+            background-color: white;
+            position: relative;
+            z-index: 5;
+        }
+        
+        #knowledge-base h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .articles {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .article {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: white;
+        }
+        
+        .article h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .read-more {
+            display: inline-block;
+            margin-top: 10px;
+            color: #1934ad;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Медиазапросы для планшетов и десктопов */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+                margin: 0 auto;
+            }
+            
+            header .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo {
+                text-align: left;
+                font-size: 1.8rem;
+            }
+            
+            nav ul {
+                flex-direction: row;
+                margin: 0;
+                gap: 20px;
+            }
+            
+            nav li {
+                margin-bottom: 0;
+            }
+            
+            .buttons, .auth-buttons {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .articles {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .article {
+                flex: 1 1 calc(50% - 20px);
+                min-width: 300px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+            
+            .article {
+                flex: 1 1 calc(33.333% - 20px);
+            }
+            
+            #hero {
+                min-height: 400px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper-index">
+        <header>
+            <div class="container">
+                <h1 class="logo">Здоровый образ жизни с нами!</h1>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="index.html">База знаний</a></li>
+                        <li><a href="programs.html">Программы</a></li>
+                        <li><a href="profile.html">Личный кабинет</a></li>
+                        <li><a href="calculator.html">Калькулятор</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="hero-bg"></div>
+                <div class="container">
+                    <h2>Начните свой путь к здоровому образу жизни сегодня!</h2>
+                    <p>На нашем портале вы найдете все необходимое для достижения ваших целей в области здоровья и фитнеса.</p>
+                    <div class="buttons">
+                        <a href="calculator.html" class="button">Рассчитать ИМТ</a>
+                        <a href="programs.html" class="button">Посмотреть программы</a>
+                    </div>
+
+                    <div class="auth-buttons">
+                        <a href="login.html" class="button">Войти</a>
+                        <a href="register.php" class="button">Регистрация</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="knowledge-base">
+                <div class="container">
+                    <h2>База знаний о здоровом образе жизни</h2>
+                    <div class="articles">
+                        <article class="article">
+                            <h3>Правильное питание</h3>
+                            <p>Сбалансированное питание играет ключевую роль в поддержании здоровья. Узнайте о принципах правильного питания, полезных продуктах и способах составления рациона.</p>
+                            <a href="https://pitanie4.tutorplace.ru/?aff_rid=EKG2&aff_subid=account2:pitanie4:---autotargeting:16621255583&yclid=4594519181295878143" class="read-more">Читать далее</a>
+                        </article>
+
+                        <article class="article">
+                            <h3>Регулярные тренировки</h3>
+                            <p>Физическая активность необходима для поддержания здоровья и хорошего самочувствия. Узнайте о различных видах тренировок, их преимуществах и способах составления программы.</p>
+                            <a href="https://www.who.int/ru/news-room/fact-sheets/detail/physical-activity" class="read-more">Читать далее</a>
+                        </article>
+
+                        <article class="article">
+                            <h3>Здоровый сон</h3>
+                            <p>Полноценный сон важен для восстановления организма и поддержания здоровья. Узнайте о правилах здорового сна и способах улучшения качества сна.</p>
+                            <a href="https://xn--90aifdm6al.xn--p1ai/blog/pravilnyj-i-zdorovyj-son-pochemu-son-tak-vazhen-dlya-zdorovya-cheloveka?ysclid=m8pnwzc3b3284679365" class="read-more">Читать далее</a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Портал по здоровью и фитнесу</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
